@@ -1,0 +1,9 @@
+<?php
+/**
+ * Shared by create.php and edit.php.
+ *
+ * @var array $values Current values (empty when creating)
+ */
+$hasOld = app(App\Core\Session::class)->has('_old_input');
+?>
+{{formFields}}

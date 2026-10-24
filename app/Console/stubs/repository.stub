@@ -1,0 +1,70 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{namespace}}\Repositories;
+
+use App\Contracts\ClockInterface;
+use App\Contracts\RepositoryInterface;
+use App\Core\Database;
+use App\Support\Pagination;
+use {{namespace}}\Models\{{class}};
+
+/**
+ * @implements RepositoryInterface<{{class}}>
+ */
+final class {{class}}Repository implements RepositoryInterface
+{
+    /** Columns that may be written from user input. */
+    private const FIELDS = [{{fieldList}}];
+
+    public function __construct(private readonly Database $db, private readonly ClockInterface $clock)
+    {
+    }
+
+    public function find(int $id): ?{{class}}
+    {
+        $row = $this->db->fetch('SELECT * FROM `{{table}}` WHERE id = ?', [$id]);
+
+        return $row === null ? null : {{class}}::fromRow($row);
+    }
+
+    public function paginate(int $page, int $perPage = 20): Pagination
+    {
+        $pagination = new Pagination((int) $this->db->fetchColumn('SELECT COUNT(*) FROM `{{table}}`'), $perPage, $page);
+
+        $rows = $this->db->fetchAll(
+            "SELECT * FROM `{{table}}` ORDER BY id DESC LIMIT {$pagination->perPage} OFFSET {$pagination->offset()}",
+        );
+
+        return $pagination->withItems(array_map({{class}}::fromRow(...), $rows));
+    }
+
+    public function create(array $attributes): int
+    {
+        $now = $this->clock->now()->format('Y-m-d H:i:s');
+
+        return $this->db->insert('{{table}}', [...$this->fillable($attributes), 'created_at' => $now, 'updated_at' => $now]);
+    }
+
+    public function update(int $id, array $attributes): bool
+    {
+        $this->db->update(
+            '{{table}}',
+            [...$this->fillable($attributes), 'updated_at' => $this->clock->now()->format('Y-m-d H:i:s')],
+            ['id' => $id],
+        );
+
+        return true;
+    }
+
+    public function delete(int $id): bool
+    {
+        return $this->db->delete('{{table}}', ['id' => $id]) > 0;
+    }
+
+    private function fillable(array $attributes): array
+    {
+        return array_intersect_key($attributes, array_flip(self::FIELDS));
+    }
+}

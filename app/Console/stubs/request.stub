@@ -1,0 +1,21 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{namespace}}\Requests;
+
+use App\Http\Requests\BaseRequest;
+
+final class {{class}}Request extends BaseRequest
+{
+    public function rules(): array
+    {
+        return [
+{{rules}}        ];
+    }
+
+    protected function prepareForValidation(array $data): array
+    {
+{{prepare}}        return $data;
+    }
+}

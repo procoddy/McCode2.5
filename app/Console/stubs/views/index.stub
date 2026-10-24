@@ -1,0 +1,33 @@
+<?php $this->set('title', '{{titlePlural}}'); ?>
+<div class="mb-6 flex flex-wrap items-center justify-between gap-4">
+    <h1 class="text-2xl font-semibold">{{titlePlural}}</h1>
+    <a href="{{url}}/create" class="btn btn-primary">New {{titleLower}}</a>
+</div>
+
+<?php if (${{variables}}->items === []): ?>
+    <div class="card text-center text-gray-500 dark:text-gray-400">No {{titlePluralLower}} yet.</div>
+<?php else: ?>
+    <div class="overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-xs dark:border-gray-800 dark:bg-gray-900">
+        <table class="w-full text-left text-sm">
+            <thead class="border-b border-gray-200 text-gray-500 dark:border-gray-800 dark:text-gray-400">
+                <tr class="*:px-4 *:py-3 *:font-medium">
+                    <th>ID</th>
+{{tableHeaders}}                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 dark:divide-gray-800">
+            <?php foreach (${{variables}}->items as ${{variable}}): ?>
+                <tr class="*:px-4 *:py-3 hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                    <td class="text-gray-500 dark:text-gray-400"><?= ${{variable}}->id ?></td>
+{{tableCells}}                    <td class="space-x-3 text-right whitespace-nowrap">
+                        <a href="{{url}}/<?= ${{variable}}->id ?>" class="link">View</a>
+                        <a href="{{url}}/<?= ${{variable}}->id ?>/edit" class="link">Edit</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+
+    <?= $this->component('pagination', ['paginator' => ${{variables}}, 'url' => '{{url}}']) ?>
+<?php endif; ?>

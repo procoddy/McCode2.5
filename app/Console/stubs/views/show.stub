@@ -1,0 +1,21 @@
+<?php $this->set('title', '{{title}} #' . ${{variable}}->id); ?>
+<div class="mb-6 flex flex-wrap items-center justify-between gap-4">
+    <h1 class="text-2xl font-semibold">{{title}} #<?= ${{variable}}->id ?></h1>
+    <a href="{{url}}" class="link">&larr; All {{titlePluralLower}}</a>
+</div>
+
+<dl class="card grid gap-x-6 gap-y-3 text-sm sm:grid-cols-[max-content_1fr] [&>dt]:text-gray-500 dark:[&>dt]:text-gray-400 [&>dd]:whitespace-pre-line">
+{{showRows}}    <dt>Created</dt>
+    <dd><?= e(${{variable}}->createdAt ?? '—') ?></dd>
+    <dt>Updated</dt>
+    <dd><?= e(${{variable}}->updatedAt ?? '—') ?></dd>
+</dl>
+
+<div class="mt-6 flex items-center gap-3">
+    <a href="{{url}}/<?= ${{variable}}->id ?>/edit" class="btn btn-secondary">Edit</a>
+    <form method="post" action="{{url}}/<?= ${{variable}}->id ?>" hx-confirm="Delete this {{titleLower}}? This cannot be undone.">
+        <?= csrf_field() ?>
+        <input type="hidden" name="_method" value="DELETE">
+        <?= $this->component('button', ['label' => 'Delete', 'type' => 'submit', 'variant' => 'danger']) ?>
+    </form>
+</div>

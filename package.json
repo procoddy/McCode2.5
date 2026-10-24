@@ -1,0 +1,19 @@
+{
+  "name": "mccode2.5",
+  "private": true,
+  "description": "Front-end build for McCode 2.5 (Tailwind CSS + HTMX)",
+  "scripts": {
+    "dev": "concurrently \"npm:dev:php\" \"npm:dev:css\"",
+    "dev:php": "php -S 127.0.0.1:8000 -t public",
+    "dev:css": "npm run build:js && tailwindcss -i resources/assets/css/app.css -o public/assets/css/app.css --watch",
+    "build": "npm run build:css && npm run build:js",
+    "build:css": "tailwindcss -i resources/assets/css/app.css -o public/assets/css/app.css --minify",
+    "build:js": "cp node_modules/htmx.org/dist/htmx.min.js public/assets/js/htmx.min.js && cp resources/assets/js/app.js public/assets/js/app.js"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "4.1.11",
+    "concurrently": "^9.2.5",
+    "htmx.org": "2.0.4",
+    "tailwindcss": "4.1.11"
+  }
+}

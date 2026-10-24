@@ -1,0 +1,17 @@
+<?php
+
+declare(strict_types=1);
+
+use App\Core\Database;
+
+return new class {
+    public function up(Database $db): void
+    {
+        // $db->query('ALTER TABLE `table` ADD COLUMN `column` INT NOT NULL DEFAULT 0');
+    }
+
+    public function down(Database $db): void
+    {
+        // $db->query('ALTER TABLE `table` DROP COLUMN `column`');
+    }
+};

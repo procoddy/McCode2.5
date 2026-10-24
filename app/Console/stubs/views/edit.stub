@@ -1,0 +1,13 @@
+<?php $this->set('title', 'Edit {{titleLower}}'); ?>
+<h1 class="mb-6 text-2xl font-semibold">Edit {{titleLower}} #<?= ${{variable}}->id ?></h1>
+
+<form method="post" action="{{url}}/<?= ${{variable}}->id ?>" class="card max-w-xl space-y-4" novalidate>
+    <?= csrf_field() ?>
+    <input type="hidden" name="_method" value="PUT">
+    <?php $values = ${{variable}}->toArray(); include __DIR__ . '/_form.php'; ?>
+
+    <div class="flex items-center gap-4 pt-2">
+        <?= $this->component('button', ['label' => 'Save changes', 'type' => 'submit']) ?>
+        <a href="{{url}}/<?= ${{variable}}->id ?>" class="link">Cancel</a>
+    </div>
+</form>

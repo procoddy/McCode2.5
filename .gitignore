@@ -1,0 +1,15 @@
+/vendor/
+/.env
+/.phpunit.cache/
+/.phpunit.result.cache
+/storage/logs/*
+/storage/cache/*
+/storage/sessions/*
+/storage/uploads/*
+/storage/exports/*
+!/storage/*/.gitkeep
+/public/assets/build/
+.idea/
+.vscode/
+*.log
+/node_modules/

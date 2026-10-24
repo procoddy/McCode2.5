@@ -1,0 +1,21 @@
+<?php
+
+declare(strict_types=1);
+
+use App\Core\Database;
+
+return new class {
+    public function up(Database $db): void
+    {
+        $db->query('CREATE TABLE `{{table}}` (
+            id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+{{columns}}            created_at DATETIME NULL,
+            updated_at DATETIME NULL
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
+    }
+
+    public function down(Database $db): void
+    {
+        $db->query('DROP TABLE IF EXISTS `{{table}}`');
+    }
+};

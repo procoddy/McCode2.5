@@ -1,0 +1,75 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{namespace}}\Controllers;
+
+use App\Core\Request;
+use App\Core\Response;
+use App\Core\Session;
+use App\Exceptions\NotFoundException;
+use {{namespace}}\Models\{{class}};
+use {{namespace}}\Repositories\{{class}}Repository;
+use {{namespace}}\Requests\{{class}}Request;
+
+final class {{class}}Controller
+{
+    public function __construct(
+        private readonly {{class}}Repository ${{variables}},
+        private readonly Session $session,
+    ) {
+    }
+
+    public function index(Request $request): Response
+    {
+        return view('{{viewPath}}.index', [
+            '{{variables}}' => $this->{{variables}}->paginate((int) $request->query('page', 1)),
+        ]);
+    }
+
+    public function create(): Response
+    {
+        return view('{{viewPath}}.create');
+    }
+
+    public function store({{class}}Request $form): Response
+    {
+        $id = $this->{{variables}}->create($form->validated());
+        $this->session->flash('status', '{{title}} created.');
+
+        return Response::redirect("{{url}}/{$id}");
+    }
+
+    public function show(int $id): Response
+    {
+        return view('{{viewPath}}.show', ['{{variable}}' => $this->findOrFail($id)]);
+    }
+
+    public function edit(int $id): Response
+    {
+        return view('{{viewPath}}.edit', ['{{variable}}' => $this->findOrFail($id)]);
+    }
+
+    public function update(int $id, {{class}}Request $form): Response
+    {
+        $this->findOrFail($id);
+        $this->{{variables}}->update($id, $form->validated());
+        $this->session->flash('status', '{{title}} updated.');
+
+        return Response::redirect("{{url}}/{$id}");
+    }
+
+    public function destroy(int $id): Response
+    {
+        $this->findOrFail($id);
+        $this->{{variables}}->delete($id);
+        $this->session->flash('status', '{{title}} deleted.');
+
+        return Response::redirect('{{url}}');
+    }
+
+    private function findOrFail(int $id): {{class}}
+    {
+        return $this->{{variables}}->find($id) ?? throw new NotFoundException('{{title}} not found.');
+    }
+}
